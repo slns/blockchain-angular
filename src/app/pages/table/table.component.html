@@ -1,0 +1,59 @@
+<nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed" nzShowSizeChanger>
+  <thead>
+    <tr>
+      <th
+      [nzSelections]="listOfSelection"
+      [(nzChecked)]="checked"
+      [nzIndeterminate]="indeterminate"
+      (nzCheckedChange)="onAllChecked($event)"
+    ></th>
+      <th nzCustomFilter>
+        ID
+        <nz-filter-trigger [(nzVisible)]="visibleID" [nzActive]="searchValueID.length > 0" [nzDropdownMenu]="menuID">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th  nzCustomFilter>
+        Date
+        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th>Currency</th>
+      <th>Amount</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of nzTable.data">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td>{{ data.id }}</td>
+      <td>{{ data.date }}</td>
+      <td>{{ data.currency }}</td>
+      <td>{{ data.amount }}</td>
+      <td><button id="btnMetadata" nz-button nzType="primary" nzDanger (click)="removeLine(data.id )"><i nz-icon nzType="delete"></i></button></td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+      <button nz-button nzSize="small" nzType="primary" (click)="searchDate()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+<nz-dropdown-menu #menuID="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search ID" [(ngModel)]="searchValueID" (change)="searchID($event)" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchID($event)" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

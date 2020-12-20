@@ -1,0 +1,37 @@
+[nz-form] {
+  max-width: 800px;
+}
+
+button {
+  margin-left: 8px;
+}
+
+nz-form-label {
+  text-align: left;
+  width: 100px;
+  padding-right: 24px;
+}
+
+input {
+  float: left;
+  width: calc(100% - 100px);
+}
+
+nz-select {
+  width: 200px;
+}
+
+#selectAmount {
+  width: 50%;
+}
+
+#inputAmout {
+  width: 50%;
+  height: 32px;
+}
+
+#inputMetadata {
+  width: 45%;
+  height: 32px;
+}
+

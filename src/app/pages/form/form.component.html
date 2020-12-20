@@ -1,0 +1,72 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>Internal Account to Debit</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="internalAcountErrorTpl">
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select an account" [(ngModel)]="internalAccountsToDebitValue" formControlName="internalAccountsToDebit">
+        <nz-option *ngFor="let internalAccountToDebit of internalAccountsToDebit" [nzLabel]="internalAccountToDebit.value" [nzValue]="internalAccountToDebit.id" ></nz-option>
+      </nz-select>
+      <ng-template #internalAcountErrorTpl let-control>
+      <ng-container *ngIf="control.hasError('required')">
+        Please input your Internal Account to Debit!
+      </ng-container>
+    </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>Amount:</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="amountErrorTpl">
+      <input id="inputAmout" nz-input formControlName="amounts"  type="text" placeholder="Amount"/>
+      <nz-select id="selectAmount"  [compareWith]="compareFn"  nzShowSearch nzAllowClear [(ngModel)]="amountSelectValue" formControlName="amountSelect" nzPlaceHolder="Select amount">
+        <nz-option *ngFor="let amount of amountSelect" [nzLabel]="amount.value" [nzValue]="amount"></nz-option>
+      </nz-select>
+      <ng-template #amountErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('amounts')">
+          The input is not amount!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your Amount!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>Fee paid by receiver:</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <nz-switch [(ngModel)]="feePaidByReceiver" formControlName="feePaidByReceiver"></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>Destination</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback >
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select an Destination" [(ngModel)]="destinationValue" formControlName="destination">
+        <nz-option nzLabel="To me" nzValue="To me"></nz-option>
+        <nz-option nzLabel="To you" nzValue="To you"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>Metadata</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
+      <button type="button" (click)="addMetadata()" class="btn btn-primary">Add More</button>
+      <div formArrayName="metadatas" >
+        <div *ngFor="let meta of metadatas().controls; let i=index"  [formGroupName]="i" style="margin-bottom: 5px;">
+          <input id="inputMetadata" nz-input formControlName="metadataKey"  type="text" placeholder="Key"/>
+          <input id="inputMetadata" nz-input formControlName="metadataValue"  type="text" placeholder="Value"/>
+          <button id="btnMetadata" nz-button nzType="primary" nzDanger (click)="removeMetadata(i)"><i nz-icon nzType="delete"></i></button>
+        </div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzOffset]="12">
+      <button nz-button (click)="resetForm($event)">Cancel</button>
+     <button nz-button nzType="primary" [disabled]="!validateForm.valid">Create transaction</button>
+   </nz-form-control>
+  </nz-form-item>
+</form>
